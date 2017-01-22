@@ -75,10 +75,15 @@ class PathTrie(object):
 
     def _addChildNode(self, parent, url):
         for name in url:
+            if name in [float, str] and len(parent.childNode) > 0:
+                return False
+            elif self._hasThisChild(parent, float) or self._hasThisChild(parent, str):
+                return False
             child = PathNode(name)
             parent.childNode.append(child)
             parent.childNameList.append(name)
             parent = child
+        return True
 
     def traversalTrieTree(self, node=None):
         if node is None:
